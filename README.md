@@ -1,6 +1,10 @@
 # lein-drip
 
-A Leiningen plugin which downloads, bootstraps and installs [drip](https://github.com/flatland/drip) as the default JVM to use for faster startup.
+A Leiningen plugin which downloads, bootstraps and installs [drip](https://github.com/flatland/drip) as the default JVM to use for faster leiningen startup.
+
+## WARNING
+
+Plugin is currently in development and nothing working has been published.
 
 ## Usage
 
