@@ -21,7 +21,7 @@
 
 (defn download-drip-executable []
   (let [file-name (get-leindrip-executable)]
-    (fetch-data "https://raw.github.com/flatland/drip/master/bin/drip" file-name)))
+    (fetch-data "https://raw.github.com/flatland/drip/develop/bin/drip" file-name)))
 
 (defn set-drip-executable-permissions []
   (let [file-name (get-leindrip-executable)]
@@ -31,7 +31,7 @@
   (let [folder-name (get-leindrip-folder)
         file-name (get-leindrip-executable)]
     (with-sh-dir folder-name
-      (sh file-name "self-install"))))
+      (sh file-name "upgrade"))))
 
 (defn drip-registered-in-lein? []
   ; placebo
