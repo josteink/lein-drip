@@ -1,5 +1,7 @@
 (ns leindrip.process
-  	(:use leindrip.platform leindrip.util))
+  (:use leindrip.platform
+        leindrip.util
+        [clojure.java.shell :only (sh with-sh-dir)]))
 
 ; actual worker-functions (dummy functions for now)
 
@@ -18,10 +20,18 @@
          (is-file? file-name))))
 
 (defn download-drip-executable []
-  :placebo)
+  (let [file-name (get-leindrip-executable)]
+    (fetch-data "https://raw.github.com/flatland/drip/master/bin/drip" file-name)))
+
+(defn set-drip-executable-permissions []
+  (let [file-name (get-leindrip-executable)]
+    (sh "chmod" "+x" file-name)))
 
 (defn invoke-drip-self-install []
-  :placebo)
+  (let [folder-name (get-leindrip-folder)
+        file-name (get-leindrip-executable)]
+    (with-sh-dir folder-name
+      (sh file-name "self-install"))))
 
 (defn drip-registered-in-lein? []
   ; placebo
