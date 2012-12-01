@@ -1,5 +1,5 @@
 (ns leiningen.drip
-	(:import java.io.File))
+  	(:import java.io.File))
 
 ; platform support
 
@@ -22,6 +22,8 @@
       (:windows platforms)
       (:unix platforms))))
 
+(def platform (get-platform))
+
 ; utility methods
 
 (defn get-home []
@@ -31,12 +33,12 @@
   (let [fs-object (File. path1 path2)]
     (.getAbsolutePath fs-object)))
 
-(defn get-leindrip-folder [platform]
+(defn get-leindrip-folder []
   (let [home (get-home)]
     (path-combine home (:leindrip-folder platform))))
 
-(defn get-leindrip-executable [platform]
-  (path-combine (get-leindrip-folder platform) (:drip-executable platform)))
+(defn get-leindrip-executable []
+  (path-combine (get-leindrip-folder) (:drip-executable platform)))
 
 (defn fs-object [path]
   (File. path))
@@ -49,34 +51,34 @@
 
 (defn is-file? [path]
   (.isFile (fs-object path)))
-  
+
 ; actual worker-functions (dummy functions for now)
 
-(defn leindrip-folder-exists? [platform]
-  (let [folder-name (get-leindrip-folder platform)]
+(defn leindrip-folder-exists? []
+  (let [folder-name (get-leindrip-folder)]
     (and (path-exists? folder-name)
          (is-directory? folder-name))))
 
-(defn create-leindrip-folder [platform]
-  (let [folder-name (get-leindrip-folder platform)]
+(defn create-leindrip-folder []
+  (let [folder-name (get-leindrip-folder)]
     (.mkdirs (fs-object folder-name))))
 
-(defn drip-executable-exists? [platform]
-  (let [file-name (get-leindrip-executable platform)]
+(defn drip-executable-exists? []
+  (let [file-name (get-leindrip-executable)]
     (and (path-exists? file-name)
          (is-file? file-name))))
 
-(defn download-drip-executable [platform]
+(defn download-drip-executable []
   :placebo)
 
-(defn invoke-drip-self-install [platform]
+(defn invoke-drip-self-install []
   :placebo)
 
-(defn drip-jvm-registered? [platform]
+(defn drip-registered-in-lein? []
   ; placebo
   false)
 
-(defn register-drip [platform]
+(defn register-drip-in-lein []
   :placebo)
 
 ; drip installation and bootstrapping process
@@ -94,22 +96,20 @@
   ;      1. download to drip-folder
   ;      2. execute to self-bootstrap
   ;      3. register in ~/.lein/leinrc
+  (println (str "Detected platform-type: " (:name platform)))
+  (if (not (leindrip-folder-exists?))
+    (do
+      (println "Lein-drip folder not found. Creating.")
+      (create-leindrip-folder)))
   
-  (let [platform (get-platform)]
-    (println (str "Detected platform-type: " (:name platform)))
-    (if (not (leindrip-folder-exists? platform))
-      (do
-        (println "Lein-drip folder not found. Creating.")
-        (create-leindrip-folder platform)))
-    
-    (if (not (drip-executable-exists? platform))
-      (do
-        (println "drip-executable not found. Downloading.")
-        (download-drip-executable platform)
-        (println "Invoking drip self-install.")
-        (invoke-drip-self-install platform)))
-    
-    (if (not (drip-jvm-registered? platform))
-      (do
-        (println "drip not registered as Lein's JVM. Registering.")
-        (register-drip platform)))))
+  (if (not (drip-executable-exists?))
+    (do
+      (println "drip-executable not found. Downloading.")
+      (download-drip-executable)
+      (println "Invoking drip self-install.")
+      (invoke-drip-self-install)))
+  
+  (if (not (drip-registered-in-lein?))
+    (do
+      (println "drip not registered as Lein's JVM. Registering.")
+      (register-drip-in-lein))))
