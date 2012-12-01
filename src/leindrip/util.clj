@@ -1,15 +1,24 @@
 (ns leindrip.util
   (:use leindrip.platform)
-  (:import java.io.File))
+  (:import (java.io File BufferedReader FileReader)))
 
 ; file-related utility methods
 
 (defn get-home []
   (System/getProperty "user.home"))
 
-(defn path-combine [path1 path2]
-  (let [fs-object (File. path1 path2)]
-    (.getAbsolutePath fs-object)))
+(defn fs-object [path]
+  (File. path))
+
+(defn path-combine [& components]
+  (let [path1 (first components)
+        path2 (second components)
+        remaining (rest (rest components))
+        fs-object (File. path1 path2)
+        combined (.getAbsolutePath fs-object)]
+    (if (> 2 (count components))
+      (recur (cons (combined remaining)))
+      combined)))
 
 (defn get-leindrip-folder []
   (let [home (get-home)]
@@ -18,8 +27,11 @@
 (defn get-leindrip-executable []
   (path-combine (get-leindrip-folder) (:drip-executable platform)))
 
-(defn fs-object [path]
-  (File. path))
+(defn get-leinrc-location []
+  (path-combine (get-home) (:lein-folder platform) "leinrc"))
+
+(defn get-drip-line []
+  (str "LEIN_JAVA_CMD=" (get-leindrip-executable)))
 
 (defn path-exists? [path]
   (.exists (fs-object path)))
@@ -30,9 +42,29 @@
 (defn is-file? [path]
   (.isFile (fs-object path)))
 
+(defn read-lines [file-name]
+  (if (and (path-exists? file-name)
+           (is-file? file-name))
+    (with-open [rdr (BufferedReader. (FileReader. file-name))]
+      (doseq [line (line-seq rdr)] (println line)))
+    []))
+
 (defn append-line [path & lines]
+  (println (str "Appending data to file at " path))
   (doseq [line lines]
     (spit path (str "\n" line) :append true)))
+
+(defn find-in-file [file line]
+  (let [lines (read-lines file)
+        is-match? (fn [current] (= line current))
+        has-match?
+        (fn [remaining]
+          (if (empty? remaining)
+            false
+            (if (is-match? (first remaining))
+              true
+              (recur (rest remaining)))))]
+    (has-match? lines)))
 
 ; network-related utility methods
 

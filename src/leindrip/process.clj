@@ -5,6 +5,9 @@
 
 ; actual worker-functions (dummy functions for now)
 
+(def drip-line
+  (str "LEIN_JAVA_CMD=" (get-leindrip-executable)))
+
 (defn leindrip-folder-exists? []
   (let [folder-name (get-leindrip-folder)]
     (and (path-exists? folder-name)
@@ -34,9 +37,12 @@
       (sh file-name "upgrade"))))
 
 (defn drip-registered-in-lein? []
-  ; placebo
-  false)
+  (let [file-name (get-leinrc-location)
+        drip-line (get-drip-line)]
+    (find-in-file file-name drip-line)))
 
 (defn register-drip-in-lein []
-  :placebo)
+  (let [file-name (get-leinrc-location)
+        drip-line (get-drip-line)]
+    (append-line file-name drip-line)))
 

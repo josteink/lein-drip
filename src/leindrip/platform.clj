@@ -11,6 +11,7 @@
     :name "Unix"
     :leindrip-folder ".leindrip"
     :drip-executable "drip"
+    :lein-folder ".lein"
     }})
 
 (defn get-platform []
