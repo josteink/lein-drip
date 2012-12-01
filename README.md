@@ -22,6 +22,11 @@ After that execute the following code once:
 
     $ lein drip
 
+If something goes wrong and you want to force the process to be run again, you can apply the 'force' param.
+This will also upgrade drip if a new version is avaiable.
+
+    $ lein drip force
+
 ## License
 
 Copyright © 2012 Jostein Kjønigsen
