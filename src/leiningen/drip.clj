@@ -1,6 +1,8 @@
 (ns leiningen.drip
 	(:import java.io.File))
 
+; utility methods
+
 (defn get-home []
   (System/getProperty "user.home"))
 
@@ -12,9 +14,32 @@
   (let [home (get-home)]
     (path-combine home ".leindrip")))
 
+(defn get-leindrip-executable []
+    (path-combine (get-leindrip-folder) "drip"))
+
 (defn path-exists? [path]
-  (let [fs-object (file. path)]
+  (let [fs-object (File. path)]
     (.exists fs-object)))
+
+; actual worker-functions (dummy functions for now)
+
+(defn create-leindrip-folder []
+  :placebo)
+
+(defn download-drip-executable []
+  :placebo)
+
+(defn invoke-drip-self-install []
+  :placebo)
+
+(defn drip-jvm-registered? []
+  ; placebo
+  false)
+
+(defn register-drip []
+  :placebo)
+
+; drip installation and bootstrapping process
 
 (defn drip
   "Download, bootstrap and register drip as the default JVM for leiningen."
@@ -30,5 +55,20 @@
   ;      2. execute to self-bootstrap
   ;      3. register in ~/.lein/leinrc
   (println "TODO: Implement me!")
-  (println (str "Make me check if the following folder exists: " (get-leindrip-folder))))
-
+  
+  (if (not (path-exists? (get-leindrip-folder)))
+    (do
+      (println "Lein-drip folder not found. Creating.")
+      (create-leindrip-folder)))
+  
+  (if (not (path-exists? (get-leindrip-executable)))
+    (do
+      (println "drip-executable not found. Downloading.")
+      (download-drip-executable)
+      (println "Invoking drip self-install.")
+      (invoke-drip-self-install)))
+  
+  (if (not (drip-jvm-registered?))
+    (do
+      (println "drip not registered as Lein's JVM. Registering.")
+      (register-drip))))
