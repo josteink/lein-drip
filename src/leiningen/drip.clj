@@ -1,5 +1,4 @@
 (ns leiningen.drip
-    (:require (clojure.contrib))
 	(:import java.io.File))
 
 ; platform support
@@ -39,14 +38,33 @@
 (defn get-leindrip-executable [platform]
   (path-combine (get-leindrip-folder platform) (:drip-executable platform)))
 
-(defn path-exists? [path]
-  (let [fs-object (File. path)]
-    (.exists fs-object)))
+(defn fs-object [path]
+  (File. path))
 
+(defn path-exists? [path]
+  (.exists (fs-object path)))
+
+(defn is-directory? [path]
+  (.isDirectory (fs-object path)))
+
+(defn is-file? [path]
+  (.isFile (fs-object path)))
+  
 ; actual worker-functions (dummy functions for now)
 
+(defn leindrip-folder-exists? [platform]
+  (let [folder-name (get-leindrip-folder platform)]
+    (and (path-exists? folder-name)
+         (is-directory? folder-name))))
+
 (defn create-leindrip-folder [platform]
-  :placebo)
+  (let [folder-name (get-leindrip-folder platform)]
+    (.mkdirs (fs-object folder-name))))
+
+(defn drip-executable-exists? [platform]
+  (let [file-name (get-leindrip-executable platform)]
+    (and (path-exists? file-name)
+         (is-file? file-name))))
 
 (defn download-drip-executable [platform]
   :placebo)
@@ -64,7 +82,7 @@
 ; drip installation and bootstrapping process
 
 (defn drip
-  "Download, bootstrap and register drip as the default JVM for leiningen."
+  "Download, bootstrap and register drip as the default JVM for Leiningen."
   [project & args]
   ; TODO: should be able to detect self-installs and print that out
   ; what needs to be done is the following:
@@ -76,16 +94,15 @@
   ;      1. download to drip-folder
   ;      2. execute to self-bootstrap
   ;      3. register in ~/.lein/leinrc
-  (println "TODO: Implement me!")
   
   (let [platform (get-platform)]
-    (println (str "Platform: " (:name platform)))
-    (if (not (path-exists? (get-leindrip-folder platform)))
+    (println (str "Detected platform-type: " (:name platform)))
+    (if (not (leindrip-folder-exists? platform))
       (do
         (println "Lein-drip folder not found. Creating.")
         (create-leindrip-folder platform)))
     
-    (if (not (path-exists? (get-leindrip-executable platform)))
+    (if (not (drip-executable-exists? platform))
       (do
         (println "drip-executable not found. Downloading.")
         (download-drip-executable platform)
