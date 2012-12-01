@@ -1,12 +1,18 @@
 # lein-drip
 
-A Leiningen plugin which downloads, bootstraps and installs [drip](https://github.com/flatland/drip) as the default JVM to use for faster leiningen startup.
+A [Leiningen](https://github.com/technomancy/leiningen) plugin which downloads, bootstraps and installs
+[drip](https://github.com/flatland/drip) as the default JVM to use for faster
+[Leiningen](https://github.com/technomancy/leiningen) startup.
 
 ## WARNING
 
 Plugin is currently in development and nothing working has been published.
 
 ## Usage
+
+**Note:** Plugin is only designed to work on Unix-based system. With drip not
+having a Windows-version, the plugin is not designed with Windows-portability
+in mind.
 
 Put `[lein-drip "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
 profiles.clj (typically found in `~/.lein`) or if you are on
