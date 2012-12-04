@@ -2,7 +2,7 @@
   (:use leindrip.platform)
   (:import (java.io File BufferedReader FileReader)))
 
-; file-related utility methods
+                                        ; file-related utility methods
 
 (defn get-home []
   (System/getProperty "user.home"))
@@ -10,14 +10,11 @@
 (defn fs-object [path]
   (File. path))
 
-(defn path-combine [& components]
-  (let [path1 (first components)
-        path2 (second components)
-        remaining (rest (rest components))
-        fs-object (File. path1 path2)
+(defn path-combine [path1 path2 & more-paths]
+  (let [fs-object (File. path1 path2)
         combined (.getAbsolutePath fs-object)]
-    (if (> 2 (count components))
-      (recur (cons (combined remaining)))
+    (if (< 0 (count more-paths))
+      (recur combined (first more-paths) (rest more-paths))
       combined)))
 
 (defn get-leindrip-folder []
@@ -42,11 +39,14 @@
 (defn is-file? [path]
   (.isFile (fs-object path)))
 
+(defn process-file [file-name line-func line-acc]
+  (with-open [rdr (BufferedReader. (FileReader. file-name))]
+    (reduce line-func line-acc (line-seq rdr))))
+
 (defn read-lines [file-name]
   (if (and (path-exists? file-name)
            (is-file? file-name))
-    (with-open [rdr (BufferedReader. (FileReader. file-name))]
-      (doseq [line (line-seq rdr)] (println line)))
+    (process-file file-name conj [])
     []))
 
 (defn append-line [path & lines]
@@ -66,17 +66,17 @@
               (recur (rest remaining)))))]
     (has-match? lines)))
 
-; network-related utility methods
+                                        ; network-related utility methods
 
-; binary data-fetch straight to file the java-way
+                                        ; binary data-fetch straight to file the java-way
 (defn fetch-data [url output-file]
   (let  [con    (-> url java.net.URL. .openConnection)
-         fields (reduce (fn [h v] 
+         fields (reduce (fn [h v]
                           (assoc h (.getKey v) (into [] (.getValue v))))
                         {} (.getHeaderFields con))
          size   (first (fields "Content-Length"))
          in     (java.io.BufferedInputStream. (.getInputStream con))
-         out    (java.io.BufferedOutputStream. 
+         out    (java.io.BufferedOutputStream.
                  (java.io.FileOutputStream. output-file))
          buffer (make-array Byte/TYPE 1024)]
     (loop [g (.read in buffer)
