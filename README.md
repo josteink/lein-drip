@@ -1,12 +1,16 @@
-# lein-drip
+B0;136;0c# lein-drip
 
 A [Leiningen](https://github.com/technomancy/leiningen) plugin which downloads, bootstraps and installs
 [drip](https://github.com/flatland/drip) as the default JVM to use for faster
 [Leiningen](https://github.com/technomancy/leiningen) startup.
 
-## WARNING
+## Clojure-external dependencies
 
-Plugin is currently in development and nothing working has been published.
+Drip depends on gcc and other tools for self bootstrapping, so you probably
+want to ensure you have the normal build-tools installed. On Debian-based
+ditros you do it like this:
+
+    $ sudo apt-get install build-essential
 
 ## Usage
 
@@ -18,7 +22,11 @@ Put `[lein-drip "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
 profiles.clj (typically found in `~/.lein`) or if you are on
 Leiningen 1.x do `lein plugin install lein-drip 0.1.0-SNAPSHOT`.
 
-After that execute the following code once:
+A minimal profiles.clj should look like this:
+
+    { :user { :plugins [[lein-drip "0.1.0-SNAPSHOT"]]}}
+
+After that execute the following code once, while in a project folder:
 
     $ lein drip
 
