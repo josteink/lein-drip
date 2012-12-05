@@ -1,4 +1,4 @@
-B0;136;0c# lein-drip
+# lein-drip
 
 A [Leiningen](https://github.com/technomancy/leiningen) plugin which downloads, bootstraps and installs
 [drip](https://github.com/flatland/drip) as the default JVM to use for faster
@@ -19,10 +19,9 @@ having a Windows-version, the plugin is not designed with Windows-portability
 in mind.
 
 Put `[lein-drip "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
-profiles.clj (typically found in `~/.lein`) or if you are on
-Leiningen 1.x do `lein plugin install lein-drip 0.1.0-SNAPSHOT`.
+`~/.lein/profiles.clj`. Leiningen 2.x is assumed:
 
-A minimal profiles.clj should look like this:
+A minimal config should look like this:
 
     { :user { :plugins [[lein-drip "0.1.0-SNAPSHOT"]]}}
 
