@@ -34,6 +34,10 @@ This will also upgrade drip if a new version is avaiable.
 
     $ lein drip force
 
+## Compatibility
+
+Lein-drip has been tested with Leiningen 2 preview and release and drip 0.1.8 and 0.1.9.
+
 ## License
 
 Copyright © 2012 Jostein Kjønigsen
