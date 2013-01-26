@@ -23,7 +23,7 @@ Put `[lein-drip "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
 
 A minimal config should look like this:
 
-    { :user { :plugins [[lein-drip "0.1.0-SNAPSHOT"]]}}
+    { :user { :plugins [[lein-drip "0.1.1-SNAPSHOT"]]}}
 
 After that execute the following code once, while in a project folder:
 
@@ -40,7 +40,7 @@ To upgrade drip to latest version, you can also use the following option:
 
 ## Compatibility
 
-Lein-drip has been tested with Leiningen 2.0.0 and drip 0.1.10.
+Lein-drip has been tested with Leiningen 2.0.0 and drip 0.1.x.
 
 ## License
 
