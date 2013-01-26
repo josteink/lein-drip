@@ -18,7 +18,7 @@ ditros you do it like this:
 having a Windows-version, the plugin is not designed with Windows-portability
 in mind.
 
-Put `[lein-drip "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
+Put `[lein-drip "0.1.1-SNAPSHOT"]` into the `:plugins` vector of your
 `~/.lein/profiles.clj`. Leiningen 2.x is assumed:
 
 A minimal config should look like this:
