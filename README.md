@@ -34,6 +34,10 @@ This will also upgrade drip if a new version is avaiable.
 
     $ lein drip force
 
+To upgrade drip to latest version, you can also use the following option:
+
+    $ lein drip upgrade
+
 ## Compatibility
 
 Lein-drip has been tested with Leiningen 2.0.0 and drip 0.1.10.
