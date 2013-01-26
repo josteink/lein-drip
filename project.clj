@@ -1,4 +1,4 @@
-(defproject lein-drip "0.1.0-SNAPSHOT"
+(defproject lein-drip "0.1.1-SNAPSHOT"
   :description "Download, bootstrap and register drip as the default JVM for leiningen."
   :url "https://github.com/josteink/lein-drip"
   :license {:name "Eclipse Public License"
