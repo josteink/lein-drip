@@ -40,10 +40,10 @@ To upgrade drip to latest version, you can also use the following option:
 
 ## Compatibility
 
-Lein-drip has been tested with Leiningen 2.0.0 and drip 0.1.x.
+Lein-drip has been tested with Leiningen 2.0.0 and drip 0.2.2.
 
 ## License
 
-Copyright © 2012 Jostein Kjønigsen
+Copyright © 2013 Jostein Kjønigsen
 
 Distributed under the Eclipse Public License, the same as Clojure.
