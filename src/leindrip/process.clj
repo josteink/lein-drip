@@ -24,7 +24,7 @@
 
 (defn download-drip-executable []
   (let [file-name (get-leindrip-executable)]
-    (fetch-data "https://raw.github.com/flatland/drip/develop/bin/drip" file-name)))
+    (fetch-data "https://raw.github.com/ninjudd/drip/develop/bin/drip" file-name)))
 
 (defn set-drip-executable-permissions []
   (let [file-name (get-leindrip-executable)]
