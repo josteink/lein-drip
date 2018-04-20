@@ -6,9 +6,9 @@ A [Leiningen](https://github.com/technomancy/leiningen) plugin which downloads, 
 
 ## Clojure-external dependencies
 
-Drip depends on gcc and other tools for self bootstrapping, so you probably
+Drip depends on gcc and other tools for self-bootstrapping, so you probably
 want to ensure you have the normal build-tools installed. On Debian-based
-ditros you do it like this:
+distros you do it like this:
 
     $ sudo apt-get install build-essential
 
